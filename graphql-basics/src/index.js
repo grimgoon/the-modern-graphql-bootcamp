@@ -1,7 +1,39 @@
 // Named export
-import myModule, { message, getGreeting } from "./myModule";
-import add, { subtract } from "./add";
+import { GraphQLServer } from "graphql-yoga";
 
-console.log(getGreeting("Andrew"));
-console.log(myModule);
-console.log(add(1,2), subtract(2,1));
+// Type definitions (schema)
+const typeDefs = `
+type Query {
+    hello: String!
+    name: String!
+    location: String!
+    bio: String!
+}
+
+`;
+// Resolvers
+const resolvers = {
+  Query: {
+    hello() {
+      return "This is my first Query!";
+    },
+    name() {
+      return "Alexander";
+    },
+    location() {
+      return "Skovde"
+    },
+    bio() {
+      return "24 year old"
+    }
+  }
+};
+
+const server = new GraphQLServer({
+  typeDefs,
+  resolvers
+});
+
+server.start(() => {
+  console.log("The server is up");
+});
