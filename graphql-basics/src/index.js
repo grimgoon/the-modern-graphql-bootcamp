@@ -1,30 +1,57 @@
 // Named export
 import { GraphQLServer } from "graphql-yoga";
 
+//Scalar types - String, Boolean, Int, Float, ID
+
 // Type definitions (schema)
 const typeDefs = `
 type Query {
-    hello: String!
+    id: ID!
     name: String!
-    location: String!
-    bio: String!
-}
+    age: Int!
+    employed: Boolean!
+    gpa: Float
+    title: String!
+    price: Float!
+    releaseYear: Int
+    rating: Float
+    inStock: Boolean
 
+}
 `;
+
 // Resolvers
 const resolvers = {
   Query: {
-    hello() {
-      return "This is my first Query!";
+    id() {
+      return "ABC12345";
     },
     name() {
       return "Alexander";
     },
-    location() {
-      return "Skovde"
+    age() {
+      return 24
     },
-    bio() {
-      return "24 year old"
+    employed() {
+      return true
+    },
+    gpa() {
+      return 3.17
+    },
+    title() {
+      return "Memes strikes Back Volume 2"
+    },
+    price() {
+      return 3.50
+    },
+    releaseYear() {
+      return 2019
+    },
+    rating() {
+      return 4.6
+    },
+    inStock() {
+      return true
     }
   }
 };
