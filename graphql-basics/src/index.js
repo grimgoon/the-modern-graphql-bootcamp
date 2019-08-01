@@ -48,8 +48,10 @@ import { GraphQLServer } from "graphql-yoga";
 // Type definitions (schema)
 const typeDefs = `
   type Query {
+    greeting(name: String): String!
     me: User!
     post: Post!
+    add(a: Float!, b: Float!): Float!
   }
 
   type User {
@@ -85,6 +87,15 @@ const resolvers = {
         body: "mike@example.com",
         published: false
       };
+    },
+    greeting(parent, args, ctx, info) {
+      if (args.name) {
+        return `Hello! ${args.name}`;
+      }
+      return "Hello!";
+    },
+    add(parent, args) {
+      return args.a + args.b;
     }
   }
 };
