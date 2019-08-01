@@ -3,56 +3,57 @@ import { GraphQLServer } from "graphql-yoga";
 
 //Scalar types - String, Boolean, Int, Float, ID
 
-// id: ID!
-// name: String!
-// age: Int!
-// employed: Boolean!
-// gpa: Float
-// title: String!
-// price: Float!
-// releaseYear: Int
-// rating: Float
-// inStock: Boolean
+// Demo user data
+const users = [
+  {
+    id: "1",
+    name: "Alexander",
+    email: "asd@asdse",
+    age: "24"
+  },
+  {
+    id: "2",
+    name: "Jessica",
+    email: "asd@asd.see",
+    age: "27"
+  },
+  {
+    id: "3",
+    name: "Mike",
+    email: "Mike@asdse",
+    age: "45"
+  }
+];
 
-// id() {
-//   return "ABC12345";
-// },
-// name() {
-//   return "Alexander";
-// },
-// age() {
-//   return 24;
-// },
-// employed() {
-//   return true;
-// },
-// gpa() {
-//   return 3.17;
-// },
-// title() {
-//   return "Memes strikes Back Volume 2";
-// },
-// price() {
-//   return 3.5;
-// },
-// releaseYear() {
-//   return 2019;
-// },
-// rating() {
-//   return 4.6;
-// },
-// inStock() {
-//   return true;
-// }
+const posts = [
+  {
+    id: "1",
+    title: "Meepq",
+    body: "Meep the Meep",
+    published: true,
+  },
+  {
+    id: "2",
+    title: "Meep",
+    body: "Meep the Meep",
+    published: true,
+  },
+  {
+    id: "3",
+    title: "Meep",
+    body: "Meep the Meepq",
+    published: true,
+  }
+
+]
 
 // Type definitions (schema)
 const typeDefs = `
   type Query {
-    greeting(name: String): String!
+    users(query: String): [User!]!
+    posts(query: String): [Post!]!
     me: User!
     post: Post!
-    add(numbers: [Float!]!): Float!
-    grades: [Int!]!
   }
 
   type User {
@@ -74,6 +75,20 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
   Query: {
+    users(parent, args, ctx, info) {
+      if(!args.query) {
+        return users;
+      }
+
+      return users.filter(user => user.name.toLowerCase().includes(args.query.toLowerCase()));
+    },
+    posts(parent, args, ctx, info) {
+      if(!args.query) {
+        return users;
+      }
+
+      return posts.filter(post => post.title.toLowerCase().includes(args.query.toLowerCase()) || post.body.toLowerCase().includes(args.query.toLowerCase()) );
+    },
     me() {
       return {
         id: "12134",
@@ -88,22 +103,6 @@ const resolvers = {
         body: "mike@example.com",
         published: false
       };
-    },
-    greeting(parent, args, ctx, info) {
-      if (args.name) {
-        return `Hello! ${args.name}`;
-      }
-      return "Hello!";
-    },
-    add(parent, args) {
-      if(args.numbers.lenth === 0) {
-        return 0;
-      }
-
-      return args.numbers.reduce((accumolator, currentValue) => accumolator + currentValue);
-    },
-    grades(parent, args, ctx, info) {
-      return [99,80, 92];
     }
   }
 };
