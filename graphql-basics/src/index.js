@@ -51,7 +51,8 @@ const typeDefs = `
     greeting(name: String): String!
     me: User!
     post: Post!
-    add(a: Float!, b: Float!): Float!
+    add(numbers: [Float!]!): Float!
+    grades: [Int!]!
   }
 
   type User {
@@ -95,7 +96,14 @@ const resolvers = {
       return "Hello!";
     },
     add(parent, args) {
-      return args.a + args.b;
+      if(args.numbers.lenth === 0) {
+        return 0;
+      }
+
+      return args.numbers.reduce((accumolator, currentValue) => accumolator + currentValue);
+    },
+    grades(parent, args, ctx, info) {
+      return [99,80, 92];
     }
   }
 };
