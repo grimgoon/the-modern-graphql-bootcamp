@@ -31,21 +31,23 @@ const posts = [
     title: "Meepq",
     body: "Meep the Meep",
     published: true,
+    author: "3"
   },
   {
     id: "2",
     title: "Meep",
     body: "Meep the Meep",
     published: true,
+    author: "2"
   },
   {
     id: "3",
     title: "Meep",
     body: "Meep the Meepq",
     published: true,
+    author: "1"
   }
-
-]
+];
 
 // Type definitions (schema)
 const typeDefs = `
@@ -61,6 +63,7 @@ const typeDefs = `
     name: String!
     email: String!
     age: Int
+    posts: [Post!]!
   }
 
   type Post {
@@ -68,6 +71,7 @@ const typeDefs = `
     title: String!
     body: String!
     published: Boolean!
+    author: User!
   }
 
 `;
@@ -76,18 +80,24 @@ const typeDefs = `
 const resolvers = {
   Query: {
     users(parent, args, ctx, info) {
-      if(!args.query) {
+      if (!args.query) {
         return users;
       }
 
-      return users.filter(user => user.name.toLowerCase().includes(args.query.toLowerCase()));
+      return users.filter(user =>
+        user.name.toLowerCase().includes(args.query.toLowerCase())
+      );
     },
     posts(parent, args, ctx, info) {
-      if(!args.query) {
+      if (!args.query) {
         return users;
       }
 
-      return posts.filter(post => post.title.toLowerCase().includes(args.query.toLowerCase()) || post.body.toLowerCase().includes(args.query.toLowerCase()) );
+      return posts.filter(
+        post =>
+          post.title.toLowerCase().includes(args.query.toLowerCase()) ||
+          post.body.toLowerCase().includes(args.query.toLowerCase())
+      );
     },
     me() {
       return {
@@ -103,6 +113,16 @@ const resolvers = {
         body: "mike@example.com",
         published: false
       };
+    }
+  },
+  Post: {
+    author(parent, args, ctx, info) {
+      return users.find(user => parent.author === user.id);
+    }
+  },
+  User: {
+    posts(parent,args, ctx, info) {
+      return posts.filter(post => post.author === parent.id)
     }
   }
 };
