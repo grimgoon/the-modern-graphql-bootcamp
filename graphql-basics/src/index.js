@@ -5,7 +5,7 @@ import uuidv4 from 'uuid/v4';
 //Scalar types - String, Boolean, Int, Float, ID
 
 // Demo user data
-const users = [
+let users = [
   {
     id: "1",
     name: "Alexander",
@@ -26,7 +26,7 @@ const users = [
   }
 ];
 
-const posts = [
+let posts = [
   {
     id: "1",
     title: "Meepq",
@@ -50,7 +50,7 @@ const posts = [
   }
 ];
 
-const comments = [
+let comments = [
   {
     id: "1",
     text: "This is awesome!",
@@ -89,8 +89,10 @@ const typeDefs = `
 
   type Mutation {
     createUser(data: CreateUserInput): User!
+    deleteUser(id: ID): User!
     createPost(data: CreatePostInput): Post!
     createComment(data: CreateCommentInput): Comment!
+    
   }
 
   input CreateUserInput {
@@ -196,7 +198,31 @@ const resolvers = {
 
       users.push(user);
       return user;
-    }, createPost(parent, args, ctx, info) {
+    
+    },
+    deleteUser(parent, args, ctx, info) {
+      const userIndex = users.findIndex(user => user.id = args.id);
+      if(userIndex === -1) {
+        throw new Error("User not found");
+      }
+
+      const deletedUsers = users.splice(userIndex, 1);
+
+      posts = posts.filter(post => {
+        const match = post.author === args.id;
+
+        if(match) {
+          comments = comments.filter(comment => comment.post !== post.id)
+        }
+
+        return !match;
+      })
+
+      comments = comments.filter(comment => comment.author !== args.id);
+
+      return deletedUsers[0];
+    },
+     createPost(parent, args, ctx, info) {
       const userExists = users.some(user => user.id === args.data.author);
 
       if(!userExists) {
@@ -211,6 +237,7 @@ const resolvers = {
       posts.push(post);
       return post;
     },
+
     createComment(parent, args, ctx, info) {
       const userExists = users.some(user => user.id === args.data.author);
 
