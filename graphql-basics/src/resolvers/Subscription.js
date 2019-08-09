@@ -12,6 +12,16 @@ const Subscription = {
 
       return pubSub.asyncIterator("count");
     }
+  },
+  comment: {
+      subscribe( parent, { postId }, { pubSub, db }, info) {
+        const post = db.posts.find(post => post.id === postId && post.published );
+        if(!post) {
+            throw new Error("Post not found");
+        }
+
+        return pubSub.asyncIterator(`comment ${postId}`);
+      }
   }
 };
 
