@@ -20,7 +20,7 @@ type Query {
   }
 
   type Subscription {
-    comment(postId: ID!): Comment!
+    comment(postId: ID!): CommentSubscriptionPayload!
     post: PostSubscriptionPayload!
   }
 
@@ -88,4 +88,9 @@ type Query {
   type PostSubscriptionPayload {
     mutatation: String!
     data: Post!
+  }
+
+  type CommentSubscriptionPayload {
+    mutatation: String!
+    data: Comment!
   }
