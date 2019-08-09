@@ -85,12 +85,18 @@ type Query {
     post: Post!
   }
 
+  enum MutationType {
+    CREATED
+    UPDATED
+    DELETED
+  }
+
   type PostSubscriptionPayload {
-    mutatation: String!
+    mutatation: MutationType!
     data: Post!
   }
 
   type CommentSubscriptionPayload {
-    mutatation: String!
+    mutatation: MutationType!
     data: Comment!
   }
