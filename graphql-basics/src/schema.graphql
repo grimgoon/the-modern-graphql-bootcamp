@@ -4,7 +4,7 @@ type Query {
     comments: [Comment!]!
     me: User!
     post: Post!
-  }
+}
 
   type Mutation {
     createUser(data: CreateUserInput): User!
@@ -19,30 +19,34 @@ type Query {
 
   }
 
+  type Subscription {
+    count: Int!
+  }
+
   input CreateUserInput {
     name: String!
     email: String!
     age: Int
-  }
+}
 
   input CreatePostInput {
     title: String!
     body: String!
     published: Boolean!
     author: ID!
-  }
+}
 
   input CreateCommentInput {
     text: String!
     author: ID!
     post: ID!
-  }
+}
 
   input UpdateUserInput {
     name: String
     email: String
     age: Int
-  }
+}
 
   input UpdatePostInput {
     title: String
