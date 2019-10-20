@@ -13,3 +13,10 @@ type Post {
   author: User!
 }
 
+  type Comment {
+    id: ID! @id
+    text: String!
+    author: User!
+    post: Post!
+  }
+
