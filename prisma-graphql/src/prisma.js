@@ -54,3 +54,13 @@ const prisma = new Prisma({
 //       console.log(JSON.stringify(data, undefined, 2));
 //     });
 //   });
+
+/// Prisma Exists
+
+prisma.exists
+  .User({
+    id: 4
+  })
+  .then(data => {
+    console.log(data);
+  });
