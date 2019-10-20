@@ -20,3 +20,4 @@ type Post {
     post: Post!
   }
 
+// @relation(name: "CommentToUser", onDelete: CASCADE || SET_NULL)
