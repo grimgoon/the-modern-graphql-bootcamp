@@ -32,23 +32,25 @@ const prisma = new Prisma({
 //     });
 //   });
 
-prisma.mutation
-  .updatePost(
-    {
-      data: {
-        title: "Pleeb",
-        body: "Meeepers is peepers",
-        published: false
-      },
-      where: {
-        id: "ck1yrxel5024p0750a7f25ib2"
-      }
-    },
-    "{ id title body published }"
-  )
-  .then(data => {
-    console.log(JSON.stringify(data));
-    prisma.query.users(null, "{id name posts { id title } }").then(data => {
-      console.log(JSON.stringify(data, undefined, 2));
-    });
-  });
+// Async stuff is ez
+
+// prisma.mutation
+//   .updatePost(
+//     {
+//       data: {
+//         title: "Pleeb",
+//         body: "Meeepers is peepers",
+//         published: false
+//       },
+//       where: {
+//         id: "ck1yrxel5024p0750a7f25ib2"
+//       }
+//     },
+//     "{ id title body published }"
+//   )
+//   .then(data => {
+//     console.log(JSON.stringify(data));
+//     prisma.query.users(null, "{id name posts { id title } }").then(data => {
+//       console.log(JSON.stringify(data, undefined, 2));
+//     });
+//   });
